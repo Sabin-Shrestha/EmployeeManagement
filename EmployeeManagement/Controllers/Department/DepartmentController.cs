@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -59,6 +60,67 @@ namespace EmployeeManagement.Controllers.Department
 
             return View(departmentViewModel);
         }
+
+
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DepartmentViewModel testViewModel = db.Department.Find(id);
+            if (testViewModel == null)
+            {
+                return HttpNotFound();
+            }
+
+
+
+            return View(testViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "DepartmentId,DepartmentName,DepartmentNo")] DepartmentViewModel testViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(testViewModel).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(testViewModel);
+        }
+
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DepartmentViewModel testViewModel = db.Department.Find(id);
+            if (testViewModel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(testViewModel);
+        }
+
+        // POST: Test/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            DepartmentViewModel testViewModel = db.Department.Find(id);
+
+            db.Department.Remove(testViewModel);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+
+
+        }
+
 
     }
 }

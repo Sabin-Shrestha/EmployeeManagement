@@ -38,18 +38,11 @@ namespace EmployeeManagement.Controllers.Employee
         // GET: Test/Create
         public ActionResult Create()
         {
-            var VinyardQry = from d in db.Department
-                             orderby d.DepartmentName
-                             select new { d.DepartmentId, d.DepartmentName };
+            //var VinyardQry = from d in db.Department
+            //                 orderby d.DepartmentName
+            //                 select new { d.DepartmentId, d.DepartmentName };
 
-
-            ViewBag.VinyardLst = new SelectList(VinyardQry, "DepartmentId", "DepartmentName");
- 
-
-
-
-
-
+            ViewBag.DepartmentList = new SelectList(db.Department, "DepartmentId", "DepartmentName");//the soure of dropdownlist
             return View();
         }
 
@@ -58,14 +51,23 @@ namespace EmployeeManagement.Controllers.Employee
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,MiddleName,LastName,Address,ContactNo,Email")] EmployeeViewModel employeeViewModel)
+        public ActionResult Create([Bind(Include = "Id,FirstName,MiddleName,LastName,Address,ContactNo,Email,DepartmentId")] EmployeeViewModel employeeViewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Employee.Add(employeeViewModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                
+                    db.Employee.Add(employeeViewModel);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                
             }
+
+            //ViewBag.DepartmentId = new SelectList(db.Department, "DepartmentId", "DepartmentName", employeeViewModel.DepartmentId);//book.Author_id sets pre-options of dropdownlist
+
+            //ViewBag.Author_id = new SelectList(db.authors, "Author_id", "Name", book.Author_id);//book.Author_id sets pre-options of dropdownlist
+
+            //ViewBag.VinyardLst = new SelectList(db.Department, "DepartmentId", "DepartmentName");//the soure of dropdownlist
+            ViewBag.DepartmentList = new SelectList(db.Department, "DepartmentId", "DepartmentName", employeeViewModel.DepartmentId);//book.Author_id sets pre-options of dropdownlist
 
             return View(employeeViewModel);
         }
@@ -87,12 +89,16 @@ namespace EmployeeManagement.Controllers.Employee
             {
                 return HttpNotFound();
             }
+
+            ViewBag.DepartmentList = new SelectList(db.Department, "DepartmentId", "DepartmentName");//the soure of dropdownlist
+
+
             return View(testViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,MiddleName,LastName,Address,ContactNo,Email")] EmployeeViewModel testViewModel)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,MiddleName,LastName,Address,ContactNo,Email,DepartmentId")] EmployeeViewModel testViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -100,6 +106,8 @@ namespace EmployeeManagement.Controllers.Employee
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.DepartmentList = new SelectList(db.Department, "DepartmentId", "DepartmentName", testViewModel.DepartmentId);//book.Author_id sets pre-options of dropdownlist
+
             return View(testViewModel);
         }
 
@@ -131,6 +139,7 @@ namespace EmployeeManagement.Controllers.Employee
 
 
         }
+
     }
 
 

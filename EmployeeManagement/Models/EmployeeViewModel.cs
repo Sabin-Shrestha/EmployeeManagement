@@ -19,11 +19,18 @@ namespace EmployeeManagement.Models
         public string ContactNo { get; set; }
         public string Email { get; set; }
 
-        // Foreign key   
+        //// Foreign key   
+        //[ForeignKey("DepartmentId")]
+        //public virtual DepartmentViewModel Departments { get; set; }
+
+        //[Display(Name = "Department")]
+        //public virtual int DepartmentId { get; set; }
+
+
+        public int DepartmentId { get; set; }//Foreign Key
         [ForeignKey("DepartmentId")]
         public virtual DepartmentViewModel Departments { get; set; }
 
-        [Display(Name = "Department")]
-        public virtual int DepartmentId { get; set; }
+
     }
 }

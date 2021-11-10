@@ -72,18 +72,21 @@
         </div>
     </div>
 
+    
+
     <div class="form-group">
-        @Html.LabelFor(model => model.DepartmentId, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.DepartmentId, "DepartmentId", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @*@Html.DropDownListFor(model => model.Departments, (SelectList)ViewBag.VinyardLst)*@
-            @Html.DropDownList("VinyardId", (IEnumerable<SelectListItem>)ViewBag.VinyardLst), new { id = "VinyardId" })
+
+            @Html.DropDownList("DepartmentId",
+                   (IEnumerable<SelectListItem>)ViewBag.DepartmentList,
+                   "Select DepartmentList")
+
+
 
             @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
         </div>
     </div>
-
-
-   
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
